@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import * as ShadcnUI from "@/design-libraries/shadcn-ui";
-import { useUpload } from "../../utilities/runtime-helpers";
+import { useUpload } from "@/utilities/runtime-helpers";
 
 function MainComponent() {
   const [selectedFiles, setSelectedFiles] = useState([]);
