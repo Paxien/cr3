@@ -16,6 +16,7 @@ import {
   faChevronDown,
   faChevronRight as faChevronRightSmall,
 } from '@fortawesome/free-solid-svg-icons';
+import PageCreator from '@/components/PageCreator';
 
 export default function PageViewer({ pages = [] }) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -254,6 +255,10 @@ export default function PageViewer({ pages = [] }) {
     return `/pages${path.startsWith('/') ? path : `/${path}`}`;
   };
 
+  const refreshPages = () => {
+    // TO DO: implement refresh logic
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md flex h-[calc(100vh-12rem)]">
       {/* Sidebar Toggle */}
@@ -308,6 +313,7 @@ export default function PageViewer({ pages = [] }) {
       {/* File Content Panel */}
       <div className={`flex-1 flex flex-col ${isSidebarCollapsed ? 'ml-6' : ''}`}>
         <div className="h-full flex flex-col">
+          <PageCreator onCreate={refreshPages} />
           {selectedFile ? (
             <>
               <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
