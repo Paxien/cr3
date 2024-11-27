@@ -9,9 +9,10 @@ import {
   faCircleXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import PageViewer from '@/components/admin/PageViewer';
+import KeyInputForm from '@/components/KeyInputForm';
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState('pages');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [pages, setPages] = useState([]);
 
   const stats = [
@@ -72,6 +73,16 @@ export default function AdminPage() {
             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Page Viewer
+          </button>
+          <button
+            onClick={() => setActiveTab('key-management')}
+            className={`${
+              activeTab === 'key-management'
+                ? 'border-indigo-500 text-indigo-600'
+                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+            } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+          >
+            Key Management
           </button>
         </nav>
       </div>
@@ -145,9 +156,9 @@ export default function AdminPage() {
               </button>
             </div>
           </div>
-        </>
+        </> 
       ) : (
-        <PageViewer pages={pages} />
+        activeTab === 'pages' ? <PageViewer pages={pages} /> : <KeyInputForm />
       )}
     </div>
   );
