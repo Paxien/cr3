@@ -13,7 +13,7 @@ import {
   useToast
 } from '@lshay/ui/components/default';
 import Script from 'next/script';
-import Icon from '../components/Icon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
   faUser,
@@ -39,7 +39,7 @@ import {
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
 
-const MainComponent = dynamic(() => Promise.resolve(() => {
+function MainComponentContent() {
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -60,16 +60,16 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
 
   const categories = ["All", "Live", "Gaming", "Music", "Sports"];
   const sidebarItems = [
-    { icon: "fa-home", label: "Home", active: true },
-    { icon: "fa-compass", label: "Explore" },
-    { icon: "fa-play", label: "Shorts", badge: "New" },
-    { icon: "fa-folder", label: "Library" },
-    { icon: "fa-history", label: "History" },
-    { icon: "fa-clock", label: "Watch Later", count: "12" },
-    { icon: "fa-thumbs-up", label: "Liked Videos", count: "48" },
-    { icon: "fa-fire", label: "Trending" },
-    { icon: "fa-music", label: "Music" },
-    { icon: "fa-gamepad", label: "Gaming" },
+    { icon: faHome, label: "Home", active: true },
+    { icon: faCompass, label: "Explore" },
+    { icon: faPlay, label: "Shorts", badge: "New" },
+    { icon: faFolder, label: "Library" },
+    { icon: faHistory, label: "History" },
+    { icon: faClock, label: "Watch Later", count: "12" },
+    { icon: faThumbsUp, label: "Liked Videos", count: "48" },
+    { icon: faFire, label: "Trending" },
+    { icon: faMusic, label: "Music" },
+    { icon: faGamepad, label: "Gaming" },
   ];
   const videos = Array.from({ length: 12 })
     .fill()
@@ -142,13 +142,13 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
             <Button
               variant="ghost"
               size="icon"
+              className="text-white hover:bg-[#ffffff20]"
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="text-white hover:bg-[#ffffff10]"
             >
-              <i className="fas fa-bars"></i>
+              <FontAwesomeIcon icon={faBars} className="h-5 w-5" />
             </Button>
             <div className="flex items-center gap-2">
-              <i className="fab fa-youtube text-red-500 text-2xl"></i>
+              <FontAwesomeIcon icon={faYoutube} className="h-6 w-6 text-red-600" />
               <span className="text-white font-medium">YouTube</span>
             </div>
           </div>
@@ -169,7 +169,7 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
                 onClick={handleSearch}
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-[#ffffff80] hover:text-white"
               >
-                <i className="fas fa-search"></i>
+                <FontAwesomeIcon icon={faSearch} className="h-5 w-5" />
               </Button>
             </div>
           </div>
@@ -178,23 +178,23 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
             <Button
               variant="ghost"
               size="icon"
-              className="text-white hover:bg-[#ffffff10]"
+              className="text-white hover:bg-[#ffffff20]"
             >
-              <i className="fas fa-video"></i>
+              <FontAwesomeIcon icon={faVideo} className="h-5 w-5" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="text-white hover:bg-[#ffffff10]"
+              className="text-white hover:bg-[#ffffff20]"
             >
-              <i className="fas fa-bell"></i>
+              <FontAwesomeIcon icon={faBell} className="h-5 w-5" />
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="rounded-full overflow-hidden hover:bg-[#ffffff10]"
+                  className="rounded-full overflow-hidden hover:bg-[#ffffff20]"
                 >
                   <img
                     src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
@@ -207,17 +207,21 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-[#ffffff20]" />
                 <DropdownMenuItem onClick={() => toast({ title: "Profile clicked" })}>
-                  <i className="fas fa-user mr-2"></i> Profile
+                  <FontAwesomeIcon icon={faUser} className="h-5 w-5 mr-2" />
+                  Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => toast({ title: "Settings clicked" })}>
-                  <i className="fas fa-cog mr-2"></i> Settings
+                  <FontAwesomeIcon icon={faCompass} className="h-5 w-5 mr-2" />
+                  Settings
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => toast({ title: "Help clicked" })}>
-                  <i className="fas fa-question-circle mr-2"></i> Help
+                  <FontAwesomeIcon icon={faQuestionCircle} className="h-5 w-5 mr-2" />
+                  Help
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-[#ffffff20]" />
                 <DropdownMenuItem onClick={() => toast({ title: "Sign out clicked" })}>
-                  <i className="fas fa-sign-out-alt mr-2"></i> Sign out
+                  <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 mr-2" />
+                  Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -231,10 +235,10 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
             {sidebarItems.map((item, index) => (
               <button
                 key={index}
-                className="w-full flex items-center gap-4 px-4 py-3 text-[#ffffffcc] hover:bg-[#ffffff10]"
+                className="w-full flex items-center gap-4 px-4 py-2 text-[#ffffffcc] hover:bg-[#ffffff20] transition-colors duration-300"
               >
-                <i className={`fas ${item.icon}`}></i>
-                <span className="font-roboto text-sm">{item.label}</span>
+                <FontAwesomeIcon icon={item.icon} className="h-5 w-5" />
+                <span className="text-sm">{item.label}</span>
               </button>
             ))}
           </aside>
@@ -273,7 +277,7 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
                     {section.title}
                   </h2>
                   <button className="text-[#ffffffcc] hover:text-white text-sm font-roboto">
-                    See all <i className="fas fa-chevron-right ml-1"></i>
+                    See all <FontAwesomeIcon icon={faChevronRight} className="ml-1" />
                   </button>
                 </div>
                 <div className="relative w-full">
@@ -291,7 +295,7 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                           />
                           <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 flex items-center justify-center transition-opacity duration-300">
-                            <i className="fas fa-play text-white text-xl"></i>
+                            <FontAwesomeIcon icon={faPlay} className="text-white text-xl" />
                           </div>
                           {video.live ? (
                             <span className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-red-600 text-white text-[10px] rounded-sm flex items-center">
@@ -312,7 +316,7 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
                             <p className="text-[#ffffffcc] text-xs group-hover:text-white transition-colors duration-300 truncate">
                               {video.channel}
                               {video.verified && (
-                                <i className="fas fa-check-circle text-blue-400 ml-1 text-[10px]"></i>
+                                <FontAwesomeIcon icon={faCheckCircle} className="text-blue-400 ml-1 text-[10px]" />
                               )}
                             </p>
                           </div>
@@ -333,9 +337,11 @@ const MainComponent = dynamic(() => Promise.resolve(() => {
       </div>
     </div>
   );
-}), {
+}
+
+const MainComponent = dynamic(() => Promise.resolve(MainComponentContent), {
   ssr: false
-};
+});
 
 export default function Page() {
   return (
