@@ -10,8 +10,10 @@ import {
   faCircleCheck,
   faCircleXmark,
   faFile,
-  faCode
+  faCode,
+  faExternalLink
 } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -182,18 +184,32 @@ export default function AdminPage() {
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Pages</h2>
               <div className="space-y-2">
                 {pages.map((page, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedFile(page.path)}
-                    className={`w-full text-left px-4 py-2 rounded-md flex items-center ${
-                      selectedFile === page.path
-                        ? 'bg-indigo-50 text-indigo-700'
-                        : 'hover:bg-gray-50'
-                    }`}
+                  <div 
+                    key={index} 
+                    className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
                   >
-                    <FontAwesomeIcon icon={faFile} className="mr-2" />
-                    <span className="truncate">{page.name}</span>
-                  </button>
+                    <button
+                      onClick={() => setSelectedFile(page.path)}
+                      className={`w-full text-left px-4 py-3 flex items-center ${
+                        selectedFile === page.path
+                          ? 'bg-indigo-50 text-indigo-700'
+                          : 'hover:bg-gray-50'
+                      }`}
+                    >
+                      <FontAwesomeIcon icon={faFile} className="mr-2" />
+                      <span className="truncate flex-1">{page.name}</span>
+                    </button>
+                    <div className="px-4 py-2 bg-gray-50 border-t border-gray-200">
+                      <Link
+                        href={`/pages/${page.name.replace('.jsx', '')}`}
+                        target="_blank"
+                        className="flex items-center text-sm text-indigo-600 hover:text-indigo-700"
+                      >
+                        <FontAwesomeIcon icon={faExternalLink} className="mr-1" />
+                        Visit Page
+                      </Link>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
