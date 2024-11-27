@@ -11,7 +11,7 @@ import {
 import PageViewer from '@/components/admin/PageViewer';
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('pages');
   const [pages, setPages] = useState([]);
 
   const stats = [
@@ -32,6 +32,7 @@ export default function AdminPage() {
     try {
       const response = await fetch('/api/admin/pages');
       const data = await response.json();
+      console.log('Fetched pages:', data.pages);
       setPages(data.pages);
     } catch (error) {
       console.error('Error fetching pages:', error);
