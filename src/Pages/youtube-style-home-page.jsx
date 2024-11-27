@@ -2,17 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import dynamic from 'next/dynamic';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  Button,
-  useToast
-} from '@lshay/ui/components/default';
-import Script from 'next/script';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
@@ -32,15 +21,111 @@ import {
   faThumbsUp,
   faFire,
   faMusic,
-  faGamepad
+  faGamepad,
+  faSignOutAlt,
+  faQuestionCircle,
+  faCog
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
 
+// Simple Button Component
+const Button = React.forwardRef(({ 
+  children, 
+  variant = 'default', 
+  size = 'default', 
+  className = '', 
+  ...props 
+}, ref) => {
+  const baseStyles = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-400";
+  const variants = {
+    default: "bg-white text-gray-900 hover:bg-gray-100",
+    ghost: "hover:bg-gray-100 hover:text-gray-900",
+    icon: "p-2"
+  };
+  const sizes = {
+    default: "h-9 px-4 py-2",
+    sm: "h-8 px-3 text-sm",
+    lg: "h-10 px-8",
+    icon: "h-9 w-9"
+  };
+
+  return (
+    <button
+      ref={ref}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+});
+Button.displayName = "Button";
+
+// Dropdown Components
+const DropdownMenu = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="relative inline-block text-left">
+      {React.Children.map(children, child =>
+        React.cloneElement(child, { isOpen, setIsOpen })
+      )}
+    </div>
+  );
+};
+
+const DropdownMenuTrigger = ({ children, isOpen, setIsOpen, asChild }) => {
+  const Comp = asChild ? React.Fragment : 'button';
+  const child = React.Children.only(children);
+  
+  return (
+    <Comp onClick={() => setIsOpen(!isOpen)}>
+      {React.cloneElement(child, {
+        'aria-expanded': isOpen,
+        'aria-haspopup': true,
+        onClick: () => setIsOpen(!isOpen)
+      })}
+    </Comp>
+  );
+};
+
+const DropdownMenuContent = ({ children, className = '' }) => {
+  return (
+    <div className={`absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${className}`}>
+      <div className="py-1" role="menu" aria-orientation="vertical">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const DropdownMenuItem = ({ children, onClick, className = '' }) => {
+  return (
+    <button
+      className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 ${className}`}
+      role="menuitem"
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
+
+const DropdownMenuLabel = ({ children, className = '' }) => {
+  return (
+    <div className={`px-4 py-2 text-sm font-medium ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+const DropdownMenuSeparator = ({ className = '' }) => {
+  return <div className={`h-px my-1 bg-gray-200 ${className}`} />;
+};
+
 function MainComponentContent() {
-  const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -101,24 +186,12 @@ function MainComponentContent() {
   ];
   const handleSearch = useCallback(() => {
     if (searchQuery.trim()) {
-      setIsSearching(true);
-      // Simulate search
-      setTimeout(() => {
-        setIsSearching(false);
-        toast({
-          title: "Search Results",
-          description: `Found results for "${searchQuery}"`,
-          duration: 3000,
-        });
-      }, 1000);
+      // Implement search functionality
+      console.log('Searching for:', searchQuery);
     }
   }, [searchQuery]);
   const handleVideoClick = useCallback((video) => {
-    toast({
-      title: "Video Selected",
-      description: `Playing: ${video.title}`,
-      duration: 2000,
-    });
+    console.log("Video Selected:", video.title);
   }, []);
   const handleHeaderScroll = useCallback(() => {
     const scrollPosition = window.scrollY;
@@ -203,23 +276,23 @@ function MainComponentContent() {
                   />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-[#ffffff05] backdrop-blur-xl border-[#ffffff20] text-white">
+              <DropdownMenuContent className="bg-white">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-[#ffffff20]" />
-                <DropdownMenuItem onClick={() => toast({ title: "Profile clicked" })}>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => console.log("Profile clicked")}>
                   <FontAwesomeIcon icon={faUser} className="h-5 w-5 mr-2" />
                   Profile
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast({ title: "Settings clicked" })}>
-                  <FontAwesomeIcon icon={faCompass} className="h-5 w-5 mr-2" />
+                <DropdownMenuItem onClick={() => console.log("Settings clicked")}>
+                  <FontAwesomeIcon icon={faCog} className="h-5 w-5 mr-2" />
                   Settings
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toast({ title: "Help clicked" })}>
+                <DropdownMenuItem onClick={() => console.log("Help clicked")}>
                   <FontAwesomeIcon icon={faQuestionCircle} className="h-5 w-5 mr-2" />
                   Help
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-[#ffffff20]" />
-                <DropdownMenuItem onClick={() => toast({ title: "Sign out clicked" })}>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => console.log("Sign out clicked")}>
                   <FontAwesomeIcon icon={faSignOutAlt} className="h-5 w-5 mr-2" />
                   Sign out
                 </DropdownMenuItem>
